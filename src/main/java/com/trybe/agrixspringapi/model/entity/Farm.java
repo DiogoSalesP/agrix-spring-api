@@ -1,10 +1,13 @@
 package com.trybe.agrixspringapi.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "farms")
@@ -15,6 +18,10 @@ public class Farm {
   private Long id;
   private String name;
   private Double size;
+
+  @OneToMany(mappedBy = "farms")
+  @JsonIgnore
+  private List<Crop> crops;
 
   public Farm() {
   }
@@ -47,5 +54,13 @@ public class Farm {
 
   public void setSize(Double size) {
     this.size = size;
+  }
+
+  public List<Crop> getCrops() {
+    return crops;
+  }
+
+  public void setCrops(Crop crops) {
+    this.crops.add(crops);
   }
 }
