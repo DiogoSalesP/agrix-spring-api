@@ -19,11 +19,18 @@ public class Farm {
   private String name;
   private Double size;
 
-  @OneToMany(mappedBy = "farms")
+  @OneToMany(mappedBy = "farm")
   @JsonIgnore
   private List<Crop> crops;
 
   public Farm() {
+  }
+
+  public Farm(Long id, String name, Double size, List<Crop> crops) {
+    this.id = id;
+    this.name = name;
+    this.size = size;
+    this.crops = crops;
   }
 
   public Farm(Long id, String name, Double size) {

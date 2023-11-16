@@ -25,6 +25,13 @@ public class Crop {
   public Crop() {
   }
 
+  public Crop(Long id, String name, Double plantedArea, Farm farm) {
+    this.id = id;
+    this.name = name;
+    this.plantedArea = plantedArea;
+    this.farm = farm;
+  }
+
   public Crop(Long id, String name, Double plantedArea) {
     this.id = id;
     this.name = name;

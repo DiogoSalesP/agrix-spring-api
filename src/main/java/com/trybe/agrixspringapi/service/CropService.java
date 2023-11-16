@@ -3,6 +3,7 @@ package com.trybe.agrixspringapi.service;
 import com.trybe.agrixspringapi.model.entity.Crop;
 import com.trybe.agrixspringapi.model.repository.CropRepository;
 import com.trybe.agrixspringapi.service.exception.CropNotFound;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,16 @@ public class CropService {
 
   public Crop findById(Long id) {
     return cropRepository.findById(id).orElseThrow(CropNotFound::new);
+  }
+
+  public List<Crop> findCropByFarmId(Long id) {
+    List<Crop> crops = new ArrayList<>();
+    for (Crop crop : findAll()) {
+      if (crop.getFarm().getId().equals(id)) {
+        crops.add(crop);
+      }
+    }
+    return crops;
   }
 
   public Crop update(Long id, Crop crop) {

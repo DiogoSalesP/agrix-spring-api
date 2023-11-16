@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,20 +25,28 @@ public class CropController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Crop>> findAll() {
+  public ResponseEntity<List<CropDto>> findAll() {
     List<Crop> crops = cropService.findAll();
     return ResponseEntity.ok(
         crops.stream()
             .map((crop -> new CropDto(crop.getId(), crop.getName(),
-                crop.getPlantedArea()).toEntity()))
+                crop.getPlantedArea(), crop.getFarm().getId()).toEntityWithFarmId()))
             .collect(
                 Collectors.toList())
     );
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Crop> findById(@PathVariable Long id) {
-    return ResponseEntity.ok(cropService.findById(id));
+  public ResponseEntity<CropDto> findById(@PathVariable Long id) {
+    Crop crop = cropService.findById(id);
+    CropDto cropDto = new CropDto(crop.getId(), crop.getName(), crop.getPlantedArea(), crop.getFarm().getId());
+    return ResponseEntity.ok(cropDto);
+  }
+
+  @DeleteMapping(value = "/{id}")
+  public ResponseEntity<Void> delete(@PathVariable Long id) {
+    cropService.delete(id);
+    return ResponseEntity.ok(null);
   }
 
 }
